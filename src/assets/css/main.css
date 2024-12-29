@@ -8,3 +8,9 @@
   font-weight: 500 !important;
   font-style: normal !important;
 }
+
+.poppins-bold {
+  font-family: 'Poppins', serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+}

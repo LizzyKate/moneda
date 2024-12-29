@@ -11,7 +11,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 <template>
   <el-row class="h-full w-3/4 mx-auto">
     <el-col class="!flex-grow">
-      <div class="mx-auto w-[47.38px] h-[38.06px] mb-12">
+      <div class="mt-5 mx-auto w-[47.38px] h-[38.06px] mb-12">
         <img src="@/assets/images/logo.svg" class="w-full h-full" alt="logo" />
       </div>
       <el-menu

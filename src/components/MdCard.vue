@@ -11,7 +11,7 @@ const props = defineProps<CardProps>()
 </script>
 <template>
   <div
-    class="w-[312px] h-[154px] border-[7px] border-[#E6E6E6] rounded-[18px] flex justify-center items-center"
+    class="w-full h-[154px] border-[7px] border-[#E6E6E6] rounded-[18px] flex justify-center items-center"
   >
     <div class="rounded-full bg-[#e6e6e6] w-[57px] h-[57px] flex items-center justify-center">
       <el-icon size="27" color="#CC5500">
