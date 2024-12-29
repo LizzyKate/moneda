@@ -1,123 +1,103 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { ElCard, ElScrollbar } from 'element-plus'
+import { ref, watch } from 'vue'
+import { type Company } from '../../../types/data'
 
-interface Company {
-  name: string
-  color: string
-  gridArea: string
+const modifiedCompanies = ref<Company[]>([])
+
+// Format currency
+const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(amount)
 }
 
-const companies = ref<Company[]>([
-  {
-    name: 'Nigeria Petroleum Development Company (NPDC)',
-    color: 'bg-purple-400',
-    gridArea: 'npdc',
+const props = defineProps<{
+  companies: Company[]
+  isLoading: boolean
+}>()
+
+const colors = [
+  'bg-purple-400',
+  'bg-pink-400',
+  'bg-purple-700',
+  'bg-emerald-400',
+  'bg-blue-500',
+  'bg-orange-500',
+  'bg-indigo-800',
+  'bg-purple-600',
+]
+
+const widths = ['w-full', 'w-2/3', 'w-1/2', 'w-1/3', 'w-1/4']
+
+function getRandomIndex(arr: string[]): string {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+watch(
+  () => props.companies,
+  (newCompanies) => {
+    if (newCompanies && newCompanies.length > 0) {
+      modifiedCompanies.value = newCompanies.map((company) => ({
+        ...company,
+        color: getRandomIndex(colors),
+        width: getRandomIndex(widths),
+      }))
+    }
   },
-  {
-    name: 'Nigerian Navy',
-    color: 'bg-pink-400',
-    gridArea: 'navy',
-  },
-  {
-    name: 'Coca Cola',
-    color: 'bg-purple-700',
-    gridArea: 'coca',
-  },
-  {
-    name: 'Others',
-    color: 'bg-emerald-400',
-    gridArea: 'others1',
-  },
-  {
-    name: 'Saha..',
-    color: 'bg-blue-500',
-    gridArea: 'saha1',
-  },
-  {
-    name: 'Others',
-    color: 'bg-orange-500',
-    gridArea: 'others2',
-  },
-  {
-    name: 'Saha..',
-    color: 'bg-indigo-800',
-    gridArea: 'saha2',
-  },
-  {
-    name: 'First E and P',
-    color: 'bg-purple-600',
-    gridArea: 'first',
-  },
-  {
-    name: 'Chevron',
-    color: 'bg-orange-500',
-    gridArea: 'chevron',
-  },
-  {
-    name: 'Newcro..',
-    color: 'bg-blue-500',
-    gridArea: 'newcro',
-  },
-  {
-    name: 'Saha..',
-    color: 'bg-indigo-800',
-    gridArea: 'saha2',
-  },
-])
+  { immediate: true },
+)
 </script>
 
 <template>
   <div class="flex items-center">
     <h1 class="text-lg text-[#080808] poppins-medium">Transaction by awarding companies</h1>
   </div>
-
   <el-card
     class="!border-[#efefef] h-[200px] !rounded-lg w-full max-w-6xl mx-auto mt-4 !bg-transparent !p-3 !shadow-none"
   >
-    <el-scrollbar height="200px" class="custom-scrollbar">
-      <div class="p-4">
-        <div class="grid-layout">
-          <template v-for="company in companies" :key="company.gridArea">
+    <el-skeleton v-if="props.isLoading" :rows="1" animated>
+      <template #template>
+        <el-skeleton-item class="bg-gray-300" />
+      </template>
+    </el-skeleton>
+    <el-scrollbar v-else height="300px" class="custom-scrollbar">
+      <div class="grid grid-cols-12 gap-4 p-4">
+        <template v-for="(company, index) in modifiedCompanies" :key="`mixed-${index}`">
+          <el-tooltip
+            :content="formatCurrency(Number(company.value_usd))"
+            placement="top"
+            effect="light"
+          >
             <div
-              :class="[company.color, ' flex items-center px-4 h-16']"
-              :style="{ gridArea: company.gridArea }"
+              :class="[
+                ' p-4 cursor-pointer transition-all duration-300 hover:opacity-90',
+                company.color,
+                company.width === 'w-full'
+                  ? 'col-span-12'
+                  : company.width === 'w-2/3'
+                    ? 'col-span-8'
+                    : company.width === 'w-1/2'
+                      ? 'col-span-6'
+                      : company.width === 'w-1/3'
+                        ? 'col-span-4'
+                        : 'col-span-3',
+              ]"
             >
-              <span class="text-white poppins-medium text-sm">{{ company.name }}</span>
+              <span class="text-white poppins-medium text-sm">{{ company.awarding_company }}</span>
             </div>
-          </template>
-        </div>
+          </el-tooltip>
+        </template>
       </div>
     </el-scrollbar>
   </el-card>
 </template>
 
 <style scoped>
-.grid-layout {
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-areas:
-    'npdc npdc npdc npdc npdc npdc coca coca coca others1 others1 saha1'
-    'navy navy navy navy navy navy others2 others2 saha2 saha2 . .'
-    'first first first first chevron chevron chevron newcro newcro . . .';
-}
-
 .custom-scrollbar :deep(.el-scrollbar__bar) {
   opacity: 0.3;
 }
 
-:deep(.el-card) {
-  border: none;
-  background-color: rgb(17, 17, 17);
-}
-
-:deep(.el-card__header) {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.el-card {
-  --el-card-padding: 0;
+.custom-scrollbar :deep(.el-scrollbar__bar):hover {
+  opacity: 0.8;
 }
 </style>

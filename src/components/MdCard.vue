@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
-
-interface CardProps {
-  title: string
-  value: string
-  icon: Component
-}
-
+import { type CardProps } from '../types/data'
 const props = defineProps<CardProps>()
 </script>
 <template>
@@ -19,8 +12,8 @@ const props = defineProps<CardProps>()
       </el-icon>
     </div>
     <div class="ml-6">
-      <p class="text-[#665E59] poppins-medium text-sm">{{ props.title }}</p>
-      <p class="text-[#140800] poppins-medium text-[32px]">{{ props.value }}</p>
+      <p class="text-[#665E59] capitalize poppins-medium text-sm">{{ props.title }}</p>
+      <p class="text-[#140800] poppins-medium text-xl">{{ props.value }}</p>
     </div>
   </div>
 </template>

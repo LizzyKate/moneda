@@ -1,8 +1,5 @@
 <script setup lang="ts">
-interface CardProps {
-  title: string
-  value: string
-}
+import { type CardProps } from '../types/data'
 
 const props = defineProps<CardProps>()
 </script>

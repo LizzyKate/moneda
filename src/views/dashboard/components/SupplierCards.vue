@@ -1,25 +1,28 @@
 <script setup lang="ts">
 import SmCard from '../../../components/SmCard.vue'
-import { ref } from 'vue'
+import { type Supplier } from '../../../types/data'
 
-interface Supplier {
-  name: string
-  value: string
-}
-
-const suppliers = ref<Supplier[]>([
-  { name: 'Sahara', value: '$100,000' },
-  { name: 'Halliburton', value: '$60,000' },
-  { name: 'Baker Hughes', value: '$7,000' },
-])
+const props = defineProps<{
+  suppliers: Supplier[]
+  isLoading: boolean
+}>()
 </script>
 
 <template>
-  <div class="w-[250px] h-[327px] p-8 rounded-xl card">
+  <div class="lg:w-[250px] min-h-[327px] p-8 rounded-xl card">
     <h3 class="text-lg text-white poppins-bold mb-6">Top OEMs/Suppliers</h3>
     <div class="">
-      <div v-for="(supplier, index) in suppliers" :key="index" :class="index !== 0 ? 'mt-4' : ''">
-        <SmCard :title="supplier.name" :value="supplier.value" />
+      <div
+        v-for="(supplier, index) in props.suppliers"
+        :key="index"
+        :class="index !== 0 ? 'mt-4' : ''"
+      >
+        <el-skeleton v-if="props.isLoading" :rows="1" animated>
+          <template #template>
+            <div class="h-4 bg-gray-300"></div>
+          </template>
+        </el-skeleton>
+        <SmCard v-else :title="supplier.name" :value="supplier.value_usd" />
       </div>
     </div>
   </div>
