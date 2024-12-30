@@ -15,6 +15,31 @@
   font-style: normal !important;
 }
 
+.poppins-regular {
+  font-family: 'Poppins', serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
 .el-card__body {
   --el-card-padding: 0px !important;
+}
+label {
+  font-family: 'Poppins', serif !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  color: #6b7280 !important;
+}
+.el-select__placeholder,
+.el-input__inner {
+  color: #374151 !important;
+  font-size: 12px !important;
+  font-family: 'Poppins', serif !important;
+  font-weight: 500 !important;
+}
+
+.el-select__wrapper,
+.el-input__wrapper {
+  border: 1px solid #d1d5db !important;
+  --el-border-radius-base: 6px !important;
 }

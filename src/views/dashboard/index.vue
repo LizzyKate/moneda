@@ -105,7 +105,7 @@ onMounted(() => {
           :transactionData="dashboardData?.transaction_type_summary ?? []"
         />
       </el-col>
-      <el-col :xl="16" :lg="14" class="text-end">
+      <el-col :lg="15" :md="12" class="text-end">
         <AwardingCompanies
           :companies="dashboardData?.awarding_company_summary ?? []"
           :isLoading="isLoading"

@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<FileProps>(), {
   maxSize: 2,
   allowedTypes: () => ['.pdf', '.docx', '.pptx', '.xlsx'],
   required: false,
-  label: 'Upload file'
+  label: 'Upload file',
 })
 
 const emit = defineEmits(['update:modelValue', 'error'])
@@ -24,22 +24,22 @@ const error = ref<string>('')
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
-  
+
   if (!file) return
-  
+
   if (file.size > props.maxSize * 1024 * 1024) {
     error.value = `File size exceeds ${props.maxSize}MB limit`
     emit('error', error.value)
     return
   }
-  
+
   const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
   if (!props.allowedTypes.includes(fileExtension)) {
     error.value = 'Invalid file type'
     emit('error', error.value)
     return
   }
-  
+
   selectedFile.value = file
   emit('update:modelValue', file)
   error.value = ''
@@ -48,15 +48,12 @@ const handleFileChange = (event: Event) => {
 
 <template>
   <div class="w-full">
-    <label 
-      class="block text-sm font-medium mb-1"
-      :class="{ 'text-red-500': error }"
-    >
+    <label class="block text-sm font-medium mb-1" :class="{ 'text-red-500': error }">
       {{ label }}<span v-if="required" class="text-red-500">*</span>
     </label>
-    
-    <div 
-      class="flex justify-center items-center border-2 border-dashed rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+
+    <div
+      class="flex justify-center w-[152px] h-[50px] items-center border border-[#E5E7EB] rounded-[4px] py-3 px-4 cursor-pointer hover:bg-gray-50"
       :class="{ 'border-red-500': error }"
       @click="() => fileInput?.click()"
     >
@@ -67,22 +64,23 @@ const handleFileChange = (event: Event) => {
         :accept="allowedTypes.join(',')"
         @change="handleFileChange"
       />
-      
+
       <el-icon>
-        <Upload color='black' size='12'/>
-        </el-icon>
-      
-      <!-- <div v-if="selectedFile" class="text-sm text-gray-600">
-        {{ selectedFile.name }}
-      </div> -->
-      <div>
-        <span class="text-sm text-gray-600">Upload file</span>
-        <!-- <p class="text-xs text-gray-400 mt-1">
-          Max file size {{ maxSize }}MB ({{ allowedTypes.join(', ') }})
-        </p> -->
+        <Upload color="#111827" size="15" />
+      </el-icon>
+
+      <div class="ml-2">
+        <span class="text-base poppins-medium text-[#1F2937]">Upload file</span>
       </div>
     </div>
-    
+    <div v-if="selectedFile" class="text-sm text-[#665E59]">
+      {{ selectedFile.name }}
+    </div>
+    <div v-else>
+      <p class="text-xs poppins-regular text-[#665E59] mt-1">
+        Max file size <strong>{{ maxSize }}MB</strong> ({{ allowedTypes.join(', ') }})
+      </p>
+    </div>
     <p v-if="error" class="mt-1 text-sm text-red-500">{{ error }}</p>
   </div>
 </template>
