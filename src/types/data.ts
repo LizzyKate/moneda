@@ -1,5 +1,9 @@
 import type { Component } from 'vue'
 
+export interface ModalProps {
+  openModal: boolean
+  title?: string
+}
 export interface CardProps {
   title: string
   value: string

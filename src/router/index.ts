@@ -15,7 +15,7 @@ const router = createRouter({
     {
       path: '/transactions',
       name: 'transactions',
-      component: () => import('@/views/dashboard/transactions.vue'),
+      component: () => import('@/views/transactions/index.vue'),
       meta: {
         layout: DashboardLayout,
       },

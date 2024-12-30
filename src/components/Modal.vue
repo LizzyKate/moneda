@@ -1,11 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { Close } from '@element-plus/icons-vue'
-
-interface ModalProps {
-  openModal: boolean
-  title?: string
-}
+import {type ModalProps} from '../types/data'
 
 const props = defineProps<ModalProps>()
 const emit = defineEmits(['update:openModal'])
