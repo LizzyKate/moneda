@@ -9,8 +9,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="lg:w-[250px] min-h-[327px] p-8 rounded-xl card">
-    <h3 class="text-lg text-white poppins-bold mb-6">Top OEMs/Suppliers</h3>
+  <div class="2xl:w-[350px] lg:w-[250px] min-h-[327px] p-8 rounded-xl card">
+    <h3 class="text-lg text-white poppins-bold mb-6">Top OEMs/Suppliers {{ props.isLoading }}</h3>
     <div class="">
       <div
         v-for="(supplier, index) in props.suppliers"
@@ -19,7 +19,7 @@ const props = defineProps<{
       >
         <el-skeleton v-if="props.isLoading" :rows="1" animated>
           <template #template>
-            <div class="h-4 bg-gray-300"></div>
+            <el-skeleton-item class="bg-gray-300" />
           </template>
         </el-skeleton>
         <SmCard v-else :title="supplier.name" :value="supplier.value_usd" />

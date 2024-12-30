@@ -1,11 +1,25 @@
 <script lang="ts" setup>
 import { Menu as IconMenu, Document, DArrowLeft } from '@element-plus/icons-vue'
+import { useRouter, useRoute } from 'vue-router'
+import { computed } from 'vue'
+
+const router = useRouter()
+const route = useRoute()
+
+// Handles menu item click to navigate
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
+
+const activeMenu = computed(() => {
+  const path = route.path
+  if (path === '/') return '1'
+  if (path === '/transactions') return '2'
+  return ''
+})
 </script>
 
 <template>
@@ -15,20 +29,20 @@ const handleClose = (key: string, keyPath: string[]) => {
         <img src="@/assets/images/logo.svg" class="w-full h-full" alt="logo" />
       </div>
       <el-menu
+        :default-active="activeMenu"
         active-text-color="#ffffff"
         active-background-color="#000"
         background-color="none"
         class="el-menu-vertical-demo !border-0"
-        default-active="2"
         text-color="#ffffff66"
         @open="handleOpen"
         @close="handleClose"
       >
-        <el-menu-item index="1">
+        <el-menu-item index="1" @click="router.push('/')">
           <el-icon><icon-menu /></el-icon>
           <span class="poppins-medium text-sm tracking-wide">Dashboard</span>
         </el-menu-item>
-        <el-menu-item index="2" class="mt-4">
+        <el-menu-item index="2" class="mt-4" @click="router.push('/transactions')">
           <el-icon><document /></el-icon>
           <span class="poppins-medium text-sm tracking-wide">Transactions</span>
         </el-menu-item>
@@ -36,7 +50,6 @@ const handleClose = (key: string, keyPath: string[]) => {
     </el-col>
     <el-button
       class="w-full !pl-5 !text-[#ffffff66] !justify-start !bg-transparent !border-0 mt-auto poppins-medium text-sm"
-      @click="handleLogout"
     >
       <el-icon><d-arrow-left /></el-icon>
       <span class="!ml-5 tracking-wide">Logout</span>
@@ -55,9 +68,6 @@ const handleClose = (key: string, keyPath: string[]) => {
 button > span {
   margin-left: 20px;
 }
-/* .el-button .el-icon {
-  margin-left: 20px;
-} */
 
 .el-menu-item.is-active {
   background-color: #cc5500;

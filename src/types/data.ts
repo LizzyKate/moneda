@@ -15,6 +15,7 @@ export interface DashboardData {
   avg_completed_date: string
   total_disbursement: string
   gross_profitability: string
+  transaction_type_summary: TransactionData[]
 }
 
 export interface Company {
@@ -33,4 +34,9 @@ export interface Transaction {
   name: string
   value: string
   icon: Component
+}
+
+export interface TransactionData {
+  transaction_type: string
+  value_usd: string
 }

@@ -14,3 +14,7 @@
   font-weight: 600 !important;
   font-style: normal !important;
 }
+
+.el-card__body {
+  --el-card-padding: 0px !important;
+}

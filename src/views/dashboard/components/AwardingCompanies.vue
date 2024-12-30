@@ -49,19 +49,21 @@ watch(
 </script>
 
 <template>
-  <div class="flex items-center">
-    <h1 class="text-lg text-[#080808] poppins-medium">Transaction by awarding companies</h1>
+  <div>
+    <h2 class="text-lg text-[#080808] poppins-medium text-left">
+      Transaction by awarding companies
+    </h2>
   </div>
   <el-card
-    class="!border-[#efefef] h-[200px] !rounded-lg w-full max-w-6xl mx-auto mt-4 !bg-transparent !p-3 !shadow-none"
+    class="!border-[#efefef] h-[350px] 2xl:h-[650px] !rounded-lg w-full mx-auto mt-4 !bg-transparent !p-3 !shadow-none"
   >
     <el-skeleton v-if="props.isLoading" :rows="1" animated>
       <template #template>
         <el-skeleton-item class="bg-gray-300" />
       </template>
     </el-skeleton>
-    <el-scrollbar v-else height="300px" class="custom-scrollbar">
-      <div class="grid grid-cols-12 gap-4 p-4">
+    <el-scrollbar v-else height="600px" class="custom-scrollbar">
+      <div class="grid grid-cols-12 gap-4">
         <template v-for="(company, index) in modifiedCompanies" :key="`mixed-${index}`">
           <el-tooltip
             :content="formatCurrency(Number(company.value_usd))"

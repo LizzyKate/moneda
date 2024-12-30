@@ -13,7 +13,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/tansactions',
+      path: '/transactions',
       name: 'transactions',
       component: () => import('@/views/dashboard/transactions.vue'),
       meta: {

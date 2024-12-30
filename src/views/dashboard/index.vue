@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import { computed, onMounted, type Component } from 'vue'
+import { computed, onMounted, ref, type Component } from 'vue'
 import SupplierCard from './components/SupplierCards.vue'
 import TransactionCards from './components/TransactionCards.vue'
 import AwardingCompanies from './components/AwardingCompanies.vue'
+import TransactionChart from './components/TransactionChart.vue'
+import Modal from '../../components/Modal.vue'
+import ProductModal from './components/ProductModal.vue'
 import { CirclePlus, Document, Money, Watch } from '@element-plus/icons-vue'
 import { useSummaryStore } from '../../stores/index'
-import moment from 'moment'
 
 const summaryStore = useSummaryStore()
+const openModal = ref(false)
 
 const dashboardData = computed(() => summaryStore.dashboardData)
 const isLoading = computed(() => summaryStore.isLoading)
+
+const handleModal = () => {
+  openModal.value = true
+}
 
 // Required keys for filtering the dashboard data
 const requiredKeys = [
@@ -78,6 +85,7 @@ onMounted(() => {
         <el-button
           :icon="CirclePlus"
           class="!bg-[#CC5500] !rounded-[4px] !border-0 w-[131px] !h-[26px] !py-4 !px-8 !text-white poppins-medium !text-xs"
+          @click="() => handleModal()"
           >New transaction</el-button
         >
       </el-col>
@@ -90,8 +98,14 @@ onMounted(() => {
         <TransactionCards :transformedData="transformedData" :isLoading="isLoading" />
       </el-col>
     </el-row>
-    <el-row class="!mt-8">
-      <el-col :span="16">
+    <el-row class="!mt-8 justify-between items-start">
+      <el-col :span="8">
+        <TransactionChart
+          :isLoading="isLoading"
+          :transactionData="dashboardData?.transaction_type_summary ?? []"
+        />
+      </el-col>
+      <el-col :xl="16" :lg="14" class="text-end">
         <AwardingCompanies
           :companies="dashboardData?.awarding_company_summary ?? []"
           :isLoading="isLoading"
@@ -99,4 +113,7 @@ onMounted(() => {
       </el-col>
     </el-row>
   </el-container>
+  <Modal :open-modal="openModal" @update:open-modal="openModal = $event">
+    <ProductModal />
+  </Modal>
 </template>
