@@ -18,15 +18,11 @@ async function submitTransactionData(data: TransactionDetails) {
 
     for (const key in data) {
       const value = data[key as keyof TransactionDetails]
-
       if (value instanceof File) {
-        console.log('Appending file:', value)
         formData.append(key, value)
       } else if (typeof value === 'object') {
-        console.log('Appending object:', value)
         formData.append(key, JSON.stringify(value))
       } else {
-        console.log('Appending file:', value)
         formData.append(key, value?.toString() ?? '')
       }
     }
