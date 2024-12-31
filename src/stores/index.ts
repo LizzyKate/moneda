@@ -23,6 +23,7 @@ export const useSummaryStore = defineStore('summary', {
     dashboardData: null as DashboardData | null,
     isLoading: true,
     isSubmitting: false,
+    isMobileNavOpen: false,
     transactionDetails: {
       transaction_type: '',
       awarding_company_id: '',
@@ -63,6 +64,9 @@ export const useSummaryStore = defineStore('summary', {
   }),
 
   actions: {
+    toggleSideNav() {
+      this.isMobileNavOpen = !this.isMobileNavOpen
+    },
     async fetchSummary() {
       try {
         const { data } = await fetchDashboardData()

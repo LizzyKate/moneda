@@ -1,18 +1,17 @@
 <script lang="ts" setup>
-import { Menu as IconMenu, Document, DArrowLeft } from '@element-plus/icons-vue'
+import { Menu as IconMenu, Close, Document, DArrowLeft } from '@element-plus/icons-vue'
 import { useRouter, useRoute } from 'vue-router'
 import { computed } from 'vue'
+import { useSummaryStore } from '../stores/index'
+
+const summaryStore = useSummaryStore()
+
+const toggleSideNav = () => {
+  summaryStore.toggleSideNav()
+}
 
 const router = useRouter()
 const route = useRoute()
-
-// Handles menu item click to navigate
-// const handleOpen = (key: string, keyPath: string[]) => {
-//   console.log(key, keyPath)
-// }
-// const handleClose = (key: string, keyPath: string[]) => {
-//   console.log(key, keyPath)
-// }
 
 const activeMenu = computed(() => {
   const path = route.path
@@ -20,11 +19,25 @@ const activeMenu = computed(() => {
   if (path === '/transactions') return '2'
   return ''
 })
+
+const navigateAndClose = (path: string) => {
+  router.push(path)
+  toggleSideNav()
+}
 </script>
 
 <template>
   <el-row class="h-full w-3/4 mx-auto">
     <el-col class="!flex-grow">
+      <div class="block md:hidden text-end w-full h-10">
+        <el-button
+          class="!pl-5 !text-[#ffffff66] !justify-start !bg-transparent !border-0 mt-auto poppins-medium text-sm"
+          @click="toggleSideNav"
+        >
+          <el-icon><Close color="white" size="20" /></el-icon>
+          <span class="!ml-5 tracking-wide">Close</span>
+        </el-button>
+      </div>
       <div class="mt-5 mx-auto w-[47.38px] h-[38.06px] mb-12">
         <img src="@/assets/images/logo.svg" class="w-full h-full" alt="logo" />
       </div>
@@ -35,14 +48,12 @@ const activeMenu = computed(() => {
         background-color="none"
         class="el-menu-vertical-demo !border-0"
         text-color="#ffffff66"
-        @open="handleOpen"
-        @close="handleClose"
       >
-        <el-menu-item index="1" @click="router.push('/')">
+        <el-menu-item index="1" @click="navigateAndClose('/')">
           <el-icon><icon-menu /></el-icon>
           <span class="poppins-medium text-sm tracking-wide">Dashboard</span>
         </el-menu-item>
-        <el-menu-item index="2" class="mt-4" @click="router.push('/transactions')">
+        <el-menu-item index="2" class="mt-4" @click="navigateAndClose('/transactions')">
           <el-icon><document /></el-icon>
           <span class="poppins-medium text-sm tracking-wide">Transactions</span>
         </el-menu-item>
