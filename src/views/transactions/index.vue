@@ -1,20 +1,7 @@
 <script setup lang="ts">
 import { ArrowLeft } from '@element-plus/icons-vue'
-
-// const options = [
-//   { label: 'Option 1', value: 1 },
-//   { label: 'Option 2', value: 2 },
-//   { label: 'Option 3', value: 3 },
-// ]
-
-// const selectedOption = ref(1)
-
-// const handleError = (error: { type: string; message: string }) => {
-//   console.error('File upload error:', error.message)
-//   // Handle error as needed (show toast, update UI, etc.)
-// }
-
-// const file = ref<File | null>(null)
+import AwardingCompanyForm from './components/AwardingCompanyForm.vue'
+import SupplierForm from './components/SuppliersForm.vue'
 
 const sections = ['Awarding Company', 'Suppliers']
 </script>
@@ -32,23 +19,20 @@ const sections = ['Awarding Company', 'Suppliers']
         </div>
       </div>
     </div>
+    <div class="p-12">
+      <!-- <AwardingCompanyForm /> -->
+      <SupplierForm />
+    </div>
   </div>
-  <!-- <InputField label="Name" modelValue="" type="number" placeholder="no" />
-  <DropdownSelect
-    v-model="selectedOption"x
-    :options="options"
-    label="Select an Option"
-    placeholder="Please choose an option"
-  />
-  <CurrencyField label="usd" />
-  <FileUpload
+
+  <!-- <FileUpload
     v-model="file"
     :max-size="2"
     :allowed-types="['.pdf', '.docx', '.pptx', '.xlsx']"
     required
     @error="handleError"
   />
-  <div v-if="file" class="mt-4">Selected file: {{ file.name }}</div> -->
+  <div v-if="file" class="mt-4">Selected file: {{ file.name }}</div>  -->
 </template>
 
 <style scoped>

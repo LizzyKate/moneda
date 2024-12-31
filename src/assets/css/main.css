@@ -30,6 +30,11 @@ label {
   font-size: 12px !important;
   color: #6b7280 !important;
 }
+
+#label {
+  font-size: 14px !important;
+  color: #140800 !important;
+}
 .el-select__placeholder,
 .el-input__inner {
   color: #374151 !important;
@@ -42,4 +47,9 @@ label {
 .el-input__wrapper {
   border: 1px solid #d1d5db !important;
   --el-border-radius-base: 6px !important;
+  height: 32px !important;
+}
+
+.el-form-item__content {
+  justify-content: center !important;
 }

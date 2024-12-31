@@ -45,24 +45,26 @@ const handleInput = (event: Event) => {
 </script>
 
 <template>
-  <label v-if="props.label" class="block text-sm font-medium text-gray-700 mb-1">
-    {{ props.label }}
-  </label>
-  <div class="flex items-center gap-2">
-    <el-select v-model="selectedCurrency" filterable class="!w-[15%]">
-      <el-option
-        v-for="currency in currencies"
-        :key="currency.code"
-        :label="`${currency.code} - ${currency.name}`"
-        :value="currency"
-      />
-    </el-select>
+  <div class="w-full">
+    <label v-if="props.label" class="text-sm font-medium text-gray-700 mb-1">
+      {{ props.label }}
+    </label>
+    <div class="flex items-center gap-2">
+      <el-select v-model="selectedCurrency" filterable class="!w-[15%]">
+        <el-option
+          v-for="currency in currencies"
+          :key="currency.code"
+          :label="`${currency.code} - ${currency.name}`"
+          :value="currency"
+        />
+      </el-select>
 
-    <el-input
-      :model-value="formattedAmount"
-      placeholder="Enter amount"
-      @input="handleInput"
-      class="w-full"
-    />
+      <el-input
+        :model-value="formattedAmount"
+        placeholder="Enter amount"
+        @input="handleInput"
+        class="w-full"
+      />
+    </div>
   </div>
 </template>

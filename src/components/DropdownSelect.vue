@@ -34,8 +34,8 @@ watch(selectedValue, (newVal) => {
 </script>
 
 <template>
-  <div>
-    <label v-if="props.label" class="block mb-1">
+  <div class="w-full">
+    <label v-if="props.label" class="mb-1">
       {{ props.label }}
     </label>
 

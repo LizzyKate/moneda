@@ -48,8 +48,8 @@ const handleFileChange = (event: Event) => {
 
 <template>
   <div class="w-full">
-    <label class="block text-sm font-medium mb-1" :class="{ 'text-red-500': error }">
-      {{ label }}<span v-if="required" class="text-red-500">*</span>
+    <label class="text-sm font-medium mb-1" id="label" :class="{ 'text-red-500': error }">
+      {{ label }}<span v-if="required" class="text-[#CC5500] ml-1">*</span>
     </label>
 
     <div

@@ -13,27 +13,29 @@ interface InputFieldProps {
 
 const props = defineProps<InputFieldProps>()
 
-watch(() => props.modelValue, (newVal) => {
-  inputValue.value = newVal
-})
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    inputValue.value = newVal
+  },
+)
 
 const inputValue = ref(props.modelValue)
-
 </script>
 
 <template>
-  <div>
+  <div class="w-full">
     <!-- Optional label -->
-    <label v-if="props.label" class="block text-sm font-medium text-gray-700 mb-1">
+    <label v-if="props.label" class="text-sm font-medium text-gray-700 mb-1">
       {{ props.label }}
     </label>
-    
+
     <!-- Element Plus input field -->
     <el-input
       v-model="inputValue"
-      :type="props.type" 
-      :placeholder="props.placeholder" 
-      :disabled="props.disabled" 
+      :type="props.type"
+      :placeholder="props.placeholder"
+      :disabled="props.disabled"
       :readonly="props.readonly"
     />
   </div>
