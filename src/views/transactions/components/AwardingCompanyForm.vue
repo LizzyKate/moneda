@@ -1,22 +1,27 @@
 <script lang="ts" setup>
 import { Warning } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import InputField from '../../../components/InputField.vue'
 import DropdownSelect from '../../../components/DropdownSelect.vue'
 import CurrencyField from '../../../components/CurrencyField.vue'
 import FileUpload from '../../../components/FileUpload.vue'
+import { useSummaryStore } from '../../../stores'
+
+const summaryStore = useSummaryStore()
+const emit = defineEmits(['update:currentForm'])
 
 // Form state
 const formData = ref({
   purchaseOrder: null,
   awardingCompany: '',
-  contractValue: 0,
+  contractValue: { selectedCurrency: null, amount: 0 },
   incoterms: '',
   invoiceDays: 0,
   previousInvoice: null,
   bankStatement: null,
   no_of_previous_contracts: null,
   paymentTerms: '',
+  executionTime: 0,
 })
 
 const awardingCompanyOptions = [
@@ -55,9 +60,18 @@ const rules = {
   contractValue: [
     { required: true, message: 'Contract value is required', trigger: 'blur' },
     {
-      validator: (rule: { field: string }, value: number, callback: (error?: Error) => void) => {
-        if (value <= 0) callback(new Error('Contract value must be greater than zero'))
-        else callback()
+      validator: (
+        rule: { field: string },
+        value: { selectedCurrency: string | null; amount: number },
+        callback: (error?: Error) => void,
+      ) => {
+        if (!value || !value.selectedCurrency || !value.amount) {
+          callback(new Error('Please select a currency and enter an amount'))
+        } else if (value.amount <= 0) {
+          callback(new Error('Amount must be greater than zero'))
+        } else {
+          callback() // validation passes
+        }
       },
       trigger: 'blur',
     },
@@ -80,9 +94,39 @@ const rules = {
     { required: true, message: 'Number of previous contracts is required', trigger: 'change' },
   ],
   paymentTerms: [{ required: true, message: 'Payment terms is required', trigger: 'change' }],
+  executionTime: [
+    { required: true, message: 'Execution time is required', trigger: 'blur' },
+    {
+      validator: (rule: { field: string }, value: number, callback: (error?: Error) => void) => {
+        if (value <= 0) callback(new Error('Execution time must be greater than zero'))
+        else callback()
+      },
+      trigger: 'blur',
+    },
+  ],
 }
 
 const formRef = ref()
+
+const isFormValid = ref(false)
+
+watch(
+  () => formData.value,
+  async () => {
+    if (!formRef.value) {
+      isFormValid.value = false
+      return
+    }
+
+    try {
+      await formRef.value.validate()
+      isFormValid.value = true
+    } catch {
+      isFormValid.value = false
+    }
+  },
+  { deep: true },
+)
 
 // Submit handler
 const handleSubmit = async () => {
@@ -90,11 +134,23 @@ const handleSubmit = async () => {
 
   formRef.value.validate((valid: boolean) => {
     if (valid) {
-      alert('Form submitted successfully!')
-      console.log('Form data:', formData.value)
-    } else {
-      console.error('Form validation failed')
+      summaryStore.updateTransactionDetails({
+        transaction_type: 'procurement',
+        awarding_company_id: formData.value.awardingCompany,
+        previous_transaction: formData.value.no_of_previous_contracts,
+        estimated_value: formData.value.contractValue.amount,
+        estimated_value_currency: formData.value.contractValue.selectedCurrency,
+        awarding_payment_terms: formData.value.paymentTerms,
+        incoterms: formData.value.incoterms,
+        duration: formData.value.executionTime,
+        payment_after_invoice: formData.value.invoiceDays,
+        purchase_order: formData.value.purchaseOrder,
+        previous_invoice: formData.value.previousInvoice,
+        bank_statement: formData.value.bankStatement,
+      })
+      emit('update:currentForm', 1)
     }
+    return !valid
   })
 }
 </script>
@@ -127,7 +183,7 @@ const handleSubmit = async () => {
             v-model="formData.invoiceDays"
             type="number"
             placeholder="Enter invoice days"
-            label="Payement after Invoice(days)"
+            label="Payment after Invoice(days)"
           />
         </el-form-item>
         <el-form-item class="mt-12" prop="purchaseOrder">
@@ -175,7 +231,7 @@ const handleSubmit = async () => {
             label="No. of Previous Contracts"
           />
         </el-form-item>
-        <el-form-item class="mt-4" props="paymentTerms">
+        <el-form-item class="mt-7" props="paymentTerms">
           <DropdownSelect
             v-model="formData.paymentTerms"
             :options="paymentTermsOptions"
@@ -194,10 +250,11 @@ const handleSubmit = async () => {
       </div>
     </div>
 
-    <el-form-item class="mx-auto">
+    <el-form-item class="!text-center">
       <el-button
-        class="!bg-[#CC5500] !rounded-[4px] !border w-[68px] !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base"
+        class="!bg-[#CC5500] !rounded-[4px] !border w-[68px] !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base disabled:opacity-50 disabled:cursor-not-allowed"
         @click="handleSubmit"
+        :disabled="!isFormValid"
       >
         Next
       </el-button>

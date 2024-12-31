@@ -12,6 +12,9 @@ interface InputFieldProps {
 }
 
 const props = defineProps<InputFieldProps>()
+const emit = defineEmits(['update:modelValue'])
+
+const inputValue = ref(props.modelValue)
 
 watch(
   () => props.modelValue,
@@ -20,7 +23,9 @@ watch(
   },
 )
 
-const inputValue = ref(props.modelValue)
+watch(inputValue, (newVal) => {
+  emit('update:modelValue', newVal)
+})
 </script>
 
 <template>

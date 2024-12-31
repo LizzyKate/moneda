@@ -72,7 +72,7 @@ watch(
           >
             <div
               :class="[
-                ' p-4 cursor-pointer transition-all duration-300 hover:opacity-90',
+                ' p-4 cursor-pointer transition-all text-start duration-300 hover:opacity-90',
                 company.color,
                 company.width === 'w-full'
                   ? 'col-span-12'

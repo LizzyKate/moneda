@@ -44,3 +44,39 @@ export interface TransactionData {
   transaction_type: string
   value_usd: string
 }
+
+export interface SupplierOemSubcontractors {
+  soc_name: string
+  country: string
+  continent: string
+  basis_of_selection: string
+  incoterms: string
+  previous_purchase: number
+  delivery_time: number
+  procurement_type: string
+  payment_terms: string
+  item_cost_currency: string
+  item_cost: number
+  logistics_cost_currency: string
+  logistics_cost: number
+  other_cost_currency: string
+  other_cost: number
+  funding_request_currency: string
+  funding_request: number
+}
+export interface TransactionDetails {
+  transaction_type: string
+  awarding_company_id: string
+  previous_transaction: number
+  estimated_value: number
+  estimated_value_currency: string
+  awarding_payment_terms: string
+  incoterms: string
+  duration: string
+  payment_after_invoice: string
+  purchase_order: null
+  previous_invoice: null
+  bank_statement: null
+  soc_name: null
+  supplier_oem_subcontractors: SupplierOemSubcontractors
+}

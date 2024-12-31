@@ -1,26 +1,40 @@
 <script lang="ts" setup>
-import { Warning } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import InputField from '../../../components/InputField.vue'
 import DropdownSelect from '../../../components/DropdownSelect.vue'
 import CurrencyField from '../../../components/CurrencyField.vue'
 import FileUpload from '../../../components/FileUpload.vue'
+import { useSummaryStore } from '../../../stores'
 
+const summaryStore = useSummaryStore()
+const emit = defineEmits(['update:currentForm'])
 // Form state
 const formData = ref({
   nameOfSupplier: '',
   paymentTerms: '',
   country: '',
-  supplierIncoTerms: '',
+  supplierIncoterms: '',
   deliveryTime: '',
   no_of_previous_purchases: null,
   basis_of_selection_of_supplier: null,
-  continents: null,
+  continent: null,
   procurementType: '',
-  costOfItems: '',
-  logisticsCost: '',
-  others: '',
-  fundingRequest: '',
+  costOfItems: {
+    selectedCurrency: null,
+    amount: 0,
+  },
+  logisticsCost: {
+    selectedCurrency: null,
+    amount: 0,
+  },
+  others: {
+    selectedCurrency: null,
+    amount: 0,
+  },
+  fundingRequest: {
+    selectedCurrency: null,
+    amount: 0,
+  },
   proFormaInvoice: null,
 })
 
@@ -135,9 +149,18 @@ const rules = {
   costOfItems: [
     { required: true, message: 'Cost of items is required', trigger: 'blur' },
     {
-      validator: (rule: { field: string }, value: number, callback: (error?: Error) => void) => {
-        if (value <= 0) callback(new Error('Cost of items must be greater than zero'))
-        else callback()
+      validator: (
+        rule: { field: string },
+        value: { selectedCurrency: string | null; amount: number },
+        callback: (error?: Error) => void,
+      ) => {
+        if (!value || !value.selectedCurrency || !value.amount) {
+          callback(new Error('Please select a currency and enter an amount'))
+        } else if (value.amount <= 0) {
+          callback(new Error('Amount must be greater than zero'))
+        } else {
+          callback() // validation passes
+        }
       },
       trigger: 'blur',
     },
@@ -145,9 +168,18 @@ const rules = {
   logisticsCost: [
     { required: true, message: 'Logistics cost is required', trigger: 'blur' },
     {
-      validator: (rule: { field: string }, value: number, callback: (error?: Error) => void) => {
-        if (value <= 0) callback(new Error('Logistics cost must be greater than zero'))
-        else callback()
+      validator: (
+        rule: { field: string },
+        value: { selectedCurrency: string | null; amount: number },
+        callback: (error?: Error) => void,
+      ) => {
+        if (!value || !value.selectedCurrency || !value.amount) {
+          callback(new Error('Please select a currency and enter an amount'))
+        } else if (value.amount <= 0) {
+          callback(new Error('Amount must be greater than zero'))
+        } else {
+          callback() // validation passes
+        }
       },
       trigger: 'blur',
     },
@@ -155,9 +187,18 @@ const rules = {
   others: [
     { required: true, message: 'Others is required', trigger: 'blur' },
     {
-      validator: (rule: { field: string }, value: number, callback: (error?: Error) => void) => {
-        if (value <= 0) callback(new Error('Other costs must be greater than zero'))
-        else callback()
+      validator: (
+        rule: { field: string },
+        value: { selectedCurrency: string | null; amount: number },
+        callback: (error?: Error) => void,
+      ) => {
+        if (!value || !value.selectedCurrency || !value.amount) {
+          callback(new Error('Please select a currency and enter an amount'))
+        } else if (value.amount <= 0) {
+          callback(new Error('Amount must be greater than zero'))
+        } else {
+          callback() // validation passes
+        }
       },
       trigger: 'blur',
     },
@@ -165,9 +206,18 @@ const rules = {
   fundingRequest: [
     { required: true, message: 'Funding request is required', trigger: 'blur' },
     {
-      validator: (rule: { field: string }, value: number, callback: (error?: Error) => void) => {
-        if (value <= 0) callback(new Error('Funding request must be greater than zero'))
-        else callback()
+      validator: (
+        rule: { field: string },
+        value: { selectedCurrency: string | null; amount: number },
+        callback: (error?: Error) => void,
+      ) => {
+        if (!value || !value.selectedCurrency || !value.amount) {
+          callback(new Error('Please select a currency and enter an amount'))
+        } else if (value.amount <= 0) {
+          callback(new Error('Amount must be greater than zero'))
+        } else {
+          callback() // validation passes
+        }
       },
       trigger: 'blur',
     },
@@ -179,17 +229,61 @@ const rules = {
 
 const formRef = ref()
 
+const isFormValid = ref(false)
+
+watch(
+  () => formData.value,
+  async () => {
+    if (!formRef.value) {
+      isFormValid.value = false
+      return
+    }
+
+    try {
+      await formRef.value.validate()
+      isFormValid.value = true
+    } catch {
+      isFormValid.value = false
+    }
+  },
+  { deep: true },
+)
+
+const goToPreviousForm = () => {
+  emit('update:currentForm', 0)
+}
+
 // Submit handler
 const handleSubmit = async () => {
   if (!formRef.value) return
+  console.log('Form data:', formData.value)
 
   formRef.value.validate((valid: boolean) => {
     if (valid) {
-      alert('Form submitted successfully!')
-      console.log('Form data:', formData.value)
-    } else {
-      console.error('Form validation failed')
+      summaryStore.updateTransactionDetails({
+        soc_name: formData.value.proFormaInvoice,
+        supplier_oem_subcontractors: {
+          soc_name: formData.value.nameOfSupplier,
+          country: formData.value.country,
+          continent: formData.value.continent,
+          basis_of_selection: formData.value.basis_of_selection_of_supplier,
+          incoterms: formData.value.supplierIncoterms,
+          previous_purchase: formData.value.no_of_previous_purchases,
+          delivery_time: formData.value.deliveryTime,
+          procurement_type: formData.value.procurementType,
+          payment_terms: formData.value.paymentTerms,
+          item_cost_currency: formData.value.costOfItems.selectedCurrency,
+          item_cost: formData.value.costOfItems.amount,
+          logistics_cost_currency: formData.value.logisticsCost.selectedCurrency,
+          logistics_cost: formData.value.logisticsCost.amount,
+          other_cost_currency: formData.value.others.selectedCurrency,
+          other_cost: formData.value.others.amount,
+          funding_request_currency: formData.value.fundingRequest.selectedCurrency,
+          funding_request: formData.value.fundingRequest.amount,
+        },
+      })
     }
+    return !valid
   })
 }
 </script>
@@ -293,7 +387,7 @@ const handleSubmit = async () => {
           />
         </el-form-item>
         <el-form-item prop="others">
-          <CurrencyField v-model="formData.Others" placeholder="Enter other costs" label="Others" />
+          <CurrencyField v-model="formData.others" placeholder="Enter other costs" label="Others" />
         </el-form-item>
         <el-form-item prop="fundingRequest">
           <CurrencyField
@@ -315,7 +409,10 @@ const handleSubmit = async () => {
       </div>
     </div>
     <div class="flex justify-center items-center space-x-8">
-      <el-button type="button" class="!border-0 !text-base poppns-medium text-[#4B5563]"
+      <el-button
+        @click="goToPreviousForm"
+        type="button"
+        class="!border-0 !text-base poppns-medium text-[#4B5563]"
         >Back</el-button
       >
       <el-form-item>
