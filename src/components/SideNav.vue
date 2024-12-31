@@ -7,12 +7,12 @@ const router = useRouter()
 const route = useRoute()
 
 // Handles menu item click to navigate
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+// const handleOpen = (key: string, keyPath: string[]) => {
+//   console.log(key, keyPath)
+// }
+// const handleClose = (key: string, keyPath: string[]) => {
+//   console.log(key, keyPath)
+// }
 
 const activeMenu = computed(() => {
   const path = route.path

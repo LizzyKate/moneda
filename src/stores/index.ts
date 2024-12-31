@@ -1,11 +1,24 @@
 import { defineStore } from 'pinia'
 import { ElNotification } from 'element-plus'
 import { fetchDashboardData, fetchAwardingCompanies, submitTransactionData } from '@/utils'
-import type { DashboardData, TransactionDetails } from '@/types/data'
+import type { DashboardData, TransactionDetails, SupplierOemSubcontractors } from '@/types/data'
 
 interface TransactionDetailsState {
   transactionDetails: TransactionDetails
 }
+
+interface TransformedTransactionDetails
+  extends Omit<TransactionDetails, 'supplier_oem_subcontractors'> {
+  supplier_oem_subcontractors: Omit<SupplierOemSubcontractors, 'pro_forma_invoice'>[]
+  [propName: string]:
+    | string
+    | number
+    | File
+    | null
+    | Omit<SupplierOemSubcontractors, 'pro_forma_invoice'>[]
+}
+
+type SupplierOemSubcontractorsWithoutProforma = Omit<SupplierOemSubcontractors, 'pro_forma_invoice'>
 
 export const useSummaryStore = defineStore('summary', {
   state: () => ({
@@ -88,8 +101,24 @@ export const useSummaryStore = defineStore('summary', {
 
     async submitTransactionData() {
       try {
-        console.log(this.transactionDetails, 'this.transactionDetails')
-        await submitTransactionData(this.transactionDetails)
+        const initialTransform = { ...this.transactionDetails }
+        const transformedData = {
+          ...initialTransform,
+          supplier_oem_subcontractors: initialTransform.supplier_oem_subcontractors.map(
+            ({ pro_forma_invoice, ...rest }) => rest,
+          ),
+        } as TransformedTransactionDetails
+
+        initialTransform.supplier_oem_subcontractors.forEach((supplier) => {
+          const { soc_name, pro_forma_invoice } = supplier
+          if (soc_name && pro_forma_invoice) {
+            transformedData[soc_name] = pro_forma_invoice
+          }
+        })
+
+        console.log(transformedData, 'transformedData')
+
+        await submitTransactionData(transformedData)
         ElNotification.success({
           title: 'Success',
           message: 'Transaction data submitted successfully',

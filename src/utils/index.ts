@@ -1,4 +1,5 @@
 import { type TransactionDetails } from '@/types/data'
+
 const API_URL = import.meta.env.VITE_API_URL
 
 async function fetchDashboardData() {
@@ -18,41 +19,14 @@ async function submitTransactionData(data: TransactionDetails) {
     for (const key in data) {
       const value = data[key as keyof TransactionDetails]
 
-      // Handling File objects
       if (value instanceof File) {
+        console.log('Appending file:', value)
         formData.append(key, value)
-      }
-      // Handling the supplier_oem_subcontractors array, processing each item
-      else if (Array.isArray(value) && key === 'supplier_oem_subcontractors') {
-        const subContractorData = value.map((subContractor, index) => {
-          const subContractorFormData: { [key: string]: any } = {}
-
-          // Check if pro_forma_invoice exists and is a File
-          if (subContractor.pro_forma_invoice instanceof File) {
-            subContractorFormData.pro_forma_invoice = subContractor.pro_forma_invoice
-          }
-
-          // Add other properties of subContractor
-          for (const subKey in subContractor) {
-            const subValue = subContractor[subKey as keyof typeof subContractor]
-            if (subValue instanceof File) {
-              subContractorFormData[subKey] = subValue
-            } else if (typeof subValue === 'object') {
-              subContractorFormData[subKey] = JSON.stringify(subValue)
-            } else {
-              subContractorFormData[subKey] = subValue?.toString() ?? ''
-            }
-          }
-
-          return subContractorFormData
-        })
-
-        formData.append(key, JSON.stringify(subContractorData)) // Append the formatted array as JSON string
-      }
-      // Handling other nested objects and primitive values
-      else if (typeof value === 'object') {
+      } else if (typeof value === 'object') {
+        console.log('Appending object:', value)
         formData.append(key, JSON.stringify(value))
       } else {
+        console.log('Appending file:', value)
         formData.append(key, value?.toString() ?? '')
       }
     }

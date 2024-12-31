@@ -20,8 +20,6 @@ const createOrUpdateChart = () => {
   const labels = props.transactionData.map((data) => data.transaction_type)
   const data = props.transactionData.map((data) => parseFloat(data.value_usd))
 
-  console.log(labels, data)
-
   // If a chart instance exists, destroy it before creating a new one
   if (chartInstance) {
     chartInstance.destroy()

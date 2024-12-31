@@ -273,7 +273,6 @@ const goToPreviousForm = () => {
 // Submit handler
 const handleSubmit = async () => {
   if (!formRef.value) return
-  console.log('Form data:', formData.value)
 
   formRef.value.validate((valid: boolean) => {
     if (valid) {

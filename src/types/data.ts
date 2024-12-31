@@ -63,7 +63,7 @@ export interface SupplierOemSubcontractors {
   other_cost: number
   funding_request_currency: string
   funding_request: number
-  pro_forma_invoice: File | null
+  pro_forma_invoice?: File | null
 }
 export interface TransactionDetails {
   transaction_type: string
@@ -79,4 +79,5 @@ export interface TransactionDetails {
   previous_invoice: File | null
   bank_statement: File | null
   supplier_oem_subcontractors: SupplierOemSubcontractors[]
+  // [key: string]?: string | number | File | null | SupplierOemSubcontractors[]
 }
