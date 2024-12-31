@@ -79,7 +79,7 @@ onMounted(() => {
   <el-container class="!block">
     <el-row class="justify-between items-center w-full">
       <el-col :span="12">
-        <h1 class="text-black poppins-bold text-[32px]">Dashboard</h1>
+        <h1 class="text-black poppins-bold md:text-[32px] text-2xl">Dashboard</h1>
       </el-col>
       <el-col :span="12" class="text-end">
         <el-button

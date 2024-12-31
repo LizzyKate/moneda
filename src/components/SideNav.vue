@@ -29,7 +29,7 @@ const navigateAndClose = (path: string) => {
 <template>
   <el-row class="h-full md:w-3/4 w-4/5 mx-auto">
     <el-col class="!flex-grow">
-      <div class="flex items-center justify-between mt-4 mb-12">
+      <div class="flex items-center justify-between lg:mt-8 mt-4 xl:mb-8 lg:mb-0 xs:mb-12">
         <div class="mx-auto w-[47.38px] h-[38.06px] md:mb-12">
           <img src="@/assets/images/logo.svg" class="w-full h-full" alt="logo" />
         </div>
