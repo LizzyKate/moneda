@@ -79,5 +79,4 @@ export interface TransactionDetails {
   previous_invoice: File | null
   bank_statement: File | null
   supplier_oem_subcontractors: SupplierOemSubcontractors[]
-  // [key: string]?: string | number | File | null | SupplierOemSubcontractors[]
 }

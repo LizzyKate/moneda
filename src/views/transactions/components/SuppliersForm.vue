@@ -53,7 +53,7 @@ const formData = ref<{
   proFormaInvoice: null,
 })
 
-const isLoading = computed(() => summaryStore.isLoading)
+const isSubmitting = computed(() => summaryStore.isSubmitting)
 
 const incotermsOptions = [
   { label: 'Ex-works', value: 'Ex-works' },
@@ -435,11 +435,11 @@ const handleSubmit = async () => {
       >
       <el-form-item>
         <el-button
-          class="!bg-[#CC5500] !rounded-[4px] !border w-[68px] !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base disabled:opacity-50 disabled:cursor-not-allowed"
+          class="!bg-[#CC5500] !rounded-[4px] !border !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base disabled:opacity-50 disabled:cursor-not-allowed"
           @click="handleSubmit"
-          :disabled="isLoading || !isFormValid"
+          :disabled="isSubmitting || !isFormValid"
         >
-          <el-loading v-if="isLoading" type="circular" />
+          <span v-if="isSubmitting">Submitting...</span>
           <span v-else>Submit</span>
         </el-button>
       </el-form-item>

@@ -18,12 +18,11 @@ interface TransformedTransactionDetails
     | Omit<SupplierOemSubcontractors, 'pro_forma_invoice'>[]
 }
 
-type SupplierOemSubcontractorsWithoutProforma = Omit<SupplierOemSubcontractors, 'pro_forma_invoice'>
-
 export const useSummaryStore = defineStore('summary', {
   state: () => ({
     dashboardData: null as DashboardData | null,
     isLoading: true,
+    isSubmitting: false,
     transactionDetails: {
       transaction_type: '',
       awarding_company_id: '',
@@ -101,6 +100,7 @@ export const useSummaryStore = defineStore('summary', {
 
     async submitTransactionData() {
       try {
+        this.isSubmitting = true
         const initialTransform = { ...this.transactionDetails }
         const transformedData = {
           ...initialTransform,
@@ -116,8 +116,6 @@ export const useSummaryStore = defineStore('summary', {
           }
         })
 
-        console.log(transformedData, 'transformedData')
-
         await submitTransactionData(transformedData)
         ElNotification.success({
           title: 'Success',
@@ -129,7 +127,7 @@ export const useSummaryStore = defineStore('summary', {
           message: (error as Error).message,
         })
       } finally {
-        this.isLoading = false
+        this.isSubmitting = true
       }
     },
   },
