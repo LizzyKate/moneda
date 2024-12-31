@@ -8,13 +8,13 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(['update:modelValue'])
 const currencies = [
-  { code: 'USD', value: 'usd' },
-  { code: 'EUR', value: 'eur' },
-  { code: 'GBP', value: 'gbp' },
-  { code: 'NGN', value: 'ngn' },
-  { code: 'CNY', value: 'cny' },
-  { code: 'JPY', value: 'jpy' },
-  { code: 'Swiss Franc', value: 'swiss_franc' },
+  { label: 'USD', value: 'usd' },
+  { label: 'EUR', value: 'eur' },
+  { label: 'GBP', value: 'gbp' },
+  { label: 'NGN', value: 'ngn' },
+  { label: 'CNY', value: 'cny' },
+  { label: 'JPY', value: 'jpy' },
+  { label: 'Swiss Franc', value: 'swiss_franc' },
 ]
 
 const selectedCurrency = ref(currencies[0].value)
@@ -30,7 +30,12 @@ watch([selectedCurrency, amount], () => {
     {{ props.label }}
   </label>
   <div class="flex items-center gap-2">
-    <DropdownSelect v-model="selectedCurrency" :options="currencies" class="!w-[28%]" />
+    <DropdownSelect
+      v-model="selectedCurrency"
+      :options="currencies"
+      class="!w-[28%]"
+      placeholder="Select currency"
+    />
     <InputField type="number" placeholder="Enter amount" v-model="amount" />
   </div>
 </template>

@@ -11,7 +11,7 @@ interface SelectFieldProps {
   modelValue: string | number
   options: Option[]
   placeholder: string
-  label: string
+  label?: string
   disabled?: boolean
 }
 

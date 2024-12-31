@@ -6,7 +6,7 @@ interface InputFieldProps {
   modelValue: string | number
   type: string
   placeholder: string
-  label: string
+  label?: string
   disabled?: boolean
   readonly?: boolean
 }
