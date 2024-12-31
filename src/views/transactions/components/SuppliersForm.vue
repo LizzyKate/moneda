@@ -308,11 +308,12 @@ const handleSubmit = async () => {
 
 <template>
   <el-form ref="formRef" :model="formData" :rules="rules">
-    <div class="flex items-start justify-between space-x-8">
-      <div class="w-1/2">
+    <div class="md:flex block items-start justify-between md:space-x-8">
+      <div class="md:w-1/2 w-full">
         <el-form-item prop="nameOfSupplier">
           <InputField
             v-model="formData.nameOfSupplier"
+            type="text"
             placeholder="Enter name of supplier"
             label="Name of Supplier[1]"
           />
@@ -351,7 +352,7 @@ const handleSubmit = async () => {
         </el-form-item>
       </div>
 
-      <div class="w-1/2">
+      <div class="md:w-1/2 w-full">
         <el-form-item prop="no_of_previous_purchases">
           <DropdownSelect
             v-model="formData.no_of_previous_purchases"
@@ -360,7 +361,7 @@ const handleSubmit = async () => {
             label="No. of Previous Purchases"
           />
         </el-form-item>
-        <el-form-item class="mt-4" props="basis_of_selection_of_supplier">
+        <el-form-item class="mt-7" props="basis_of_selection_of_supplier">
           <DropdownSelect
             v-model="formData.basis_of_selection_of_supplier"
             :options="basis_of_selection_of_supplierOptions"
@@ -387,9 +388,9 @@ const handleSubmit = async () => {
       </div>
     </div>
 
-    <div class="mt-4">
+    <div class="md:mt-4 mt-8">
       <h3 class="text-[#A6A6A6] poppins-medium text-xl">Cost</h3>
-      <div class="grid grid-cols-2 gap-x-4">
+      <div class="md:grid block grid-cols-2 gap-x-4">
         <el-form-item prop="costOfItems">
           <CurrencyField
             v-model="formData.costOfItems"
@@ -426,7 +427,7 @@ const handleSubmit = async () => {
         </el-form-item>
       </div>
     </div>
-    <div class="flex justify-center items-center space-x-8">
+    <div class="flex justify-center items-center md:mt-0 mt-8 space-x-8">
       <el-button
         @click="goToPreviousForm"
         type="button"

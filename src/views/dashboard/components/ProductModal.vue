@@ -30,17 +30,19 @@ onMounted(() => {
 })
 </script>
 <template>
-  <h2 class="poppins-medium text-center text-2xl text-[#140800] leading-8 w-[522px] mx-auto">
+  <h2
+    class="poppins-medium text-center md:text-2xl text-lg text-[#140800] md:leading-8 leading-6 md:w-[522px] mx-auto"
+  >
     Our products were made just for you, select an option below to get started.
   </h2>
-  <div class="flex items-center justify-center space-x-4 mt-8">
+  <div class="flex md:flex-row flex-col items-center justify-center md:space-x-4 mt-8">
     <div
       v-for="(item, index) in products"
       :key="index"
-      class="flex justify-center items-center flex-col border-[0.6px] border[#A6A6A6] py-5 px-4 w-[210px] h-[213px] rounded-xl"
       :class="{
         'border border-black': selectedIndex === index,
         'border-[0.6px] border-[#A6A6A6]': selectedIndex !== index,
+        'mt-4': index !== 0,
         'flex justify-center items-center flex-col border-[0.6px] border[#A6A6A6] py-5 px-4 w-[210px] h-[213px] rounded-xl': true,
       }"
       @click="selectedIndex = selectedIndex === index ? null : index"

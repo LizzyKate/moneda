@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="2xl:w-[350px] lg:w-[250px] min-h-[327px] p-8 rounded-xl card">
+  <div class="2xl:!w-[470px] lg:!w-[250px] xs:!w-full min-h-[327px] p-8 rounded-xl card">
     <h3 class="text-lg text-white poppins-bold mb-6">Top OEMs/Suppliers {{ props.isLoading }}</h3>
     <div class="">
       <div

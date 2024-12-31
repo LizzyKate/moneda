@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { Close } from '@element-plus/icons-vue'
-import {type ModalProps} from '../types/data'
+import { type ModalProps } from '../types/data'
 
 const props = defineProps<ModalProps>()
 const emit = defineEmits(['update:openModal'])
@@ -25,10 +25,9 @@ const closeModal = () => {
     v-model="modalVisible"
     :visible="openModal"
     :title="title"
-    width="840"
     :show-close="false"
     :close-on-click-modal="false"
-    class='h-[557px]'
+    class="md:h-[557px] max-w-full xs:!w-full md:w-[480px] lg:!w-[840px]"
   >
     <div class="flex justify-end items-center">
       <button @click="closeModal">
@@ -40,4 +39,3 @@ const closeModal = () => {
     <slot></slot>
   </el-dialog>
 </template>
-

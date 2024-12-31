@@ -91,7 +91,7 @@ onMounted(() => {
       </el-col>
     </el-row>
     <el-row class="!mt-8">
-      <el-col :span="6">
+      <el-col :md="6" :xs="24" class="xs:mb-10 lg:mb-0">
         <SupplierCard :suppliers="dashboardData?.soc_summary ?? []" :isLoading="isLoading" />
       </el-col>
       <el-col :xl="18" :lg="18" :md="16" class="ml-auto">
@@ -99,13 +99,13 @@ onMounted(() => {
       </el-col>
     </el-row>
     <el-row class="!mt-8 justify-between items-start">
-      <el-col :span="8">
+      <el-col :md="8" :xs="24" class="xs:mb-10 lg:mb-0">
         <TransactionChart
           :isLoading="isLoading"
           :transactionData="dashboardData?.transaction_type_summary ?? []"
         />
       </el-col>
-      <el-col :lg="15" :md="12" class="text-end">
+      <el-col :lg="15" :md="12" class="text-end !sm:mt-10 !md:mt-0">
         <AwardingCompanies
           :companies="dashboardData?.awarding_company_summary ?? []"
           :isLoading="isLoading"

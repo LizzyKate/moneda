@@ -4,9 +4,9 @@ import NavBar from '../components/NavBar.vue'
 </script>
 <template>
   <el-container class="h-screen">
-    <el-aside class="bg-black py-10" width="220px">
+    <!-- <el-aside class="bg-black py-10" width="220px">
       <SideNav />
-    </el-aside>
+    </el-aside> -->
     <el-container>
       <el-header class="border-b border-[#E6E6E6] !pt-8 !pb-11">
         <NavBar />

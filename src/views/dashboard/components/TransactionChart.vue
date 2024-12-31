@@ -81,7 +81,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="border-[0.6px] border-[#D1D1D1] w-[354px] 2xl:w-[600px] 2xl:h-[700px] h-[397px] p-6 rounded-lg"
+    class="border-[0.6px] border-[#D1D1D1] xs:w-full lg:w-[354px] md:w-1/2 md:mx-auto lg:mx-0 2xl:w-[600px] 2xl:h-[700px] h-[397px] p-6 rounded-lg"
   >
     <h2 class="poppins-medium text-lg text-[#080808] mb-3">Transaction by product</h2>
     <canvas ref="chartCanvas"></canvas>

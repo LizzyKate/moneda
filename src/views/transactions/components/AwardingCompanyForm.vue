@@ -183,8 +183,8 @@ onMounted(() => {
 
 <template>
   <el-form ref="formRef" :model="formData" :rules="rules">
-    <div class="flex items-start justify-between space-x-8">
-      <div class="w-1/2">
+    <div class="md:flex block items-start justify-between md:space-x-8">
+      <div class="md:w-1/2 w-full">
         <el-form-item prop="awardingCompany">
           <DropdownSelect
             v-model="formData.awardingCompany"
@@ -227,7 +227,7 @@ onMounted(() => {
               <Warning color="#665E59" size="14" />
             </el-icon>
           </div>
-          <div class="mt-4 flex items-center space-x-12">
+          <div class="mt-4 md:flex block items-center md:space-x-12">
             <el-form-item prop="previousInvoice">
               <FileUpload
                 v-model="formData.previousInvoice"
@@ -248,7 +248,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="w-1/2">
+      <div class="md:w-1/2 w-full">
         <el-form-item prop="no_of_previous_contracts">
           <DropdownSelect
             v-model="formData.no_of_previous_contracts"
@@ -278,7 +278,7 @@ onMounted(() => {
 
     <el-form-item class="!text-center">
       <el-button
-        class="!bg-[#CC5500] !rounded-[4px] !border w-[68px] !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base disabled:opacity-50 disabled:cursor-not-allowed"
+        class="!bg-[#CC5500] md:mt-0 mt-8 !rounded-[4px] !border w-[68px] !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base disabled:opacity-50 disabled:cursor-not-allowed"
         @click="handleSubmit"
         :disabled="!isFormValid"
       >
