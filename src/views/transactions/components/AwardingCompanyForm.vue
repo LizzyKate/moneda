@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Warning } from '@element-plus/icons-vue'
-import { computed, ref, watch } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import InputField from '../../../components/InputField.vue'
 import DropdownSelect from '../../../components/DropdownSelect.vue'
 import CurrencyField from '../../../components/CurrencyField.vue'
@@ -11,37 +11,51 @@ const summaryStore = useSummaryStore()
 const emit = defineEmits(['update:currentForm'])
 
 // Form state
-const formData = ref({
+const formData = ref<{
+  purchaseOrder: File | null
+  awardingCompany: string
+  contractValue: { selectedCurrency: string; amount: number }
+  incoterms: string
+  invoiceDays: number
+  previousInvoice: File | null
+  bankStatement: File | null
+  no_of_previous_contracts: number
+  paymentTerms: string
+  executionTime: number
+}>({
   purchaseOrder: null,
   awardingCompany: '',
-  contractValue: { selectedCurrency: null, amount: 0 },
+  contractValue: { selectedCurrency: '', amount: 0 },
   incoterms: '',
   invoiceDays: 0,
   previousInvoice: null,
   bankStatement: null,
-  no_of_previous_contracts: null,
+  no_of_previous_contracts: 0,
   paymentTerms: '',
   executionTime: 0,
 })
 
-const awardingCompanyOptions = [
-  { label: 'Company A', value: 'company-a' },
-  { label: 'Company B', value: 'company-b' },
-  { label: 'Company C', value: 'company-c' },
-]
+const awardingCompanies = computed(() => summaryStore.awardingCompanies)
+
+const awardingCompanyOptions = computed(() =>
+  awardingCompanies.value.map((company) => ({
+    label: company.name,
+    value: company.id,
+  })),
+)
 
 const incotermsOptions = [
-  { label: 'Ex-works', value: 'exworks' },
-  { label: 'FCA', value: 'fca' },
-  { label: 'CPT', value: 'cpt' },
-  { label: 'Dat', value: 'dat' },
-  { label: 'Fas', value: 'fas' },
-  { label: 'FOB', value: 'fob' },
-  { label: 'CFR', value: 'cfr' },
-  { label: 'CIP', value: 'cip' },
-  { label: 'CIF', value: 'cif' },
-  { label: 'DAP', value: 'dap' },
-  { label: 'DDP', value: 'ddp' },
+  { label: 'Ex-works', value: 'Ex-works' },
+  { label: 'FCA', value: 'FCA' },
+  { label: 'CPT', value: 'CPT' },
+  { label: 'Dat', value: 'DAT' },
+  { label: 'Fas', value: 'FAS' },
+  { label: 'FOB', value: 'FOB' },
+  { label: 'CFR', value: 'CFR' },
+  { label: 'CIP', value: 'CIP' },
+  { label: 'CIF', value: 'CIF' },
+  { label: 'DAP', value: 'DAP' },
+  { label: 'DDP', value: 'DDP' },
 ]
 
 const no_of_previous_contractsOptions = [
@@ -92,6 +106,14 @@ const rules = {
   bankStatement: [{ required: true, message: 'Bank statement is required', trigger: 'change' }],
   no_of_previous_contracts: [
     { required: true, message: 'Number of previous contracts is required', trigger: 'change' },
+    {
+      validator: (rule: { field: string }, value: number, callback: (error?: Error) => void) => {
+        if (value <= 0)
+          callback(new Error('Number of previous contracts must be greater than zero'))
+        else callback()
+      },
+      trigger: 'change',
+    },
   ],
   paymentTerms: [{ required: true, message: 'Payment terms is required', trigger: 'change' }],
   executionTime: [
@@ -137,13 +159,13 @@ const handleSubmit = async () => {
       summaryStore.updateTransactionDetails({
         transaction_type: 'procurement',
         awarding_company_id: formData.value.awardingCompany,
-        previous_transaction: formData.value.no_of_previous_contracts,
-        estimated_value: formData.value.contractValue.amount,
+        previous_transaction: Number(formData.value.no_of_previous_contracts),
+        estimated_value: Number(formData.value.contractValue.amount),
         estimated_value_currency: formData.value.contractValue.selectedCurrency,
         awarding_payment_terms: formData.value.paymentTerms,
         incoterms: formData.value.incoterms,
-        duration: formData.value.executionTime,
-        payment_after_invoice: formData.value.invoiceDays,
+        duration: Number(formData.value.executionTime),
+        payment_after_invoice: Number(formData.value.invoiceDays),
         purchase_order: formData.value.purchaseOrder,
         previous_invoice: formData.value.previousInvoice,
         bank_statement: formData.value.bankStatement,
@@ -153,6 +175,10 @@ const handleSubmit = async () => {
     return !valid
   })
 }
+
+onMounted(() => {
+  summaryStore.fetchAwardingCompanies()
+})
 </script>
 
 <template>

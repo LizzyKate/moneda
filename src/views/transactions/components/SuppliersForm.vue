@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import InputField from '../../../components/InputField.vue'
 import DropdownSelect from '../../../components/DropdownSelect.vue'
 import CurrencyField from '../../../components/CurrencyField.vue'
@@ -9,47 +9,64 @@ import { useSummaryStore } from '../../../stores'
 const summaryStore = useSummaryStore()
 const emit = defineEmits(['update:currentForm'])
 // Form state
-const formData = ref({
+const formData = ref<{
+  nameOfSupplier: string
+  paymentTerms: string
+  country: string
+  supplierIncoterms: string
+  deliveryTime: number
+  no_of_previous_purchases: number
+  basis_of_selection_of_supplier: string
+  continent: string
+  procurementType: string
+  costOfItems: { selectedCurrency: string; amount: number }
+  logisticsCost: { selectedCurrency: string; amount: number }
+  others: { selectedCurrency: string; amount: number }
+  fundingRequest: { selectedCurrency: string; amount: number }
+  proFormaInvoice: File | null
+}>({
   nameOfSupplier: '',
   paymentTerms: '',
   country: '',
   supplierIncoterms: '',
-  deliveryTime: '',
-  no_of_previous_purchases: null,
-  basis_of_selection_of_supplier: null,
-  continent: null,
+  deliveryTime: 0,
+  no_of_previous_purchases: 0,
+  basis_of_selection_of_supplier: '',
+  continent: '',
   procurementType: '',
   costOfItems: {
-    selectedCurrency: null,
+    selectedCurrency: '',
     amount: 0,
   },
   logisticsCost: {
-    selectedCurrency: null,
+    selectedCurrency: '',
     amount: 0,
   },
   others: {
-    selectedCurrency: null,
+    selectedCurrency: '',
     amount: 0,
   },
   fundingRequest: {
-    selectedCurrency: null,
+    selectedCurrency: '',
     amount: 0,
   },
   proFormaInvoice: null,
 })
 
+const isLoading = computed(() => summaryStore.isLoading)
+
 const incotermsOptions = [
-  { label: 'Ex-works', value: 'exworks' },
-  { label: 'FCA', value: 'fca' },
-  { label: 'CPT', value: 'cpt' },
-  { label: 'Dat', value: 'dat' },
-  { label: 'Fas', value: 'fas' },
-  { label: 'FOB', value: 'fob' },
-  { label: 'CFR', value: 'cfr' },
-  { label: 'CIP', value: 'cip' },
-  { label: 'CIF', value: 'cif' },
-  { label: 'DAP', value: 'dap' },
-  { label: 'DDP', value: 'ddp' },
+  { label: 'Ex-works', value: 'Ex-works' },
+  { label: 'FCA', value: 'FCA' },
+  { label: 'CPT', value: 'CPT' },
+  { label: 'Dat', value: 'DAT' },
+  { label: 'Fas', value: 'FAS' },
+  { label: 'FOB', value: 'FOB' },
+  { label: 'CFR', value: 'CFR' },
+  { label: 'CIP', value: 'CIP' },
+  { label: 'CIF', value: 'CIF' },
+  { label: 'DAP', value: 'DAP' },
+  { label: 'DDP', value: 'DDP' },
 ]
 
 const paymentTermsOptions = [
@@ -151,7 +168,7 @@ const rules = {
     {
       validator: (
         rule: { field: string },
-        value: { selectedCurrency: string | null; amount: number },
+        value: { selectedCurrency: string; amount: number },
         callback: (error?: Error) => void,
       ) => {
         if (!value || !value.selectedCurrency || !value.amount) {
@@ -170,7 +187,7 @@ const rules = {
     {
       validator: (
         rule: { field: string },
-        value: { selectedCurrency: string | null; amount: number },
+        value: { selectedCurrency: string; amount: number },
         callback: (error?: Error) => void,
       ) => {
         if (!value || !value.selectedCurrency || !value.amount) {
@@ -189,7 +206,7 @@ const rules = {
     {
       validator: (
         rule: { field: string },
-        value: { selectedCurrency: string | null; amount: number },
+        value: { selectedCurrency: string; amount: number },
         callback: (error?: Error) => void,
       ) => {
         if (!value || !value.selectedCurrency || !value.amount) {
@@ -208,7 +225,7 @@ const rules = {
     {
       validator: (
         rule: { field: string },
-        value: { selectedCurrency: string | null; amount: number },
+        value: { selectedCurrency: string; amount: number },
         callback: (error?: Error) => void,
       ) => {
         if (!value || !value.selectedCurrency || !value.amount) {
@@ -260,28 +277,30 @@ const handleSubmit = async () => {
 
   formRef.value.validate((valid: boolean) => {
     if (valid) {
+      const supplierData = {
+        soc_name: formData.value.nameOfSupplier,
+        country: formData.value.country,
+        continent: formData.value.continent,
+        basis_of_selection: formData.value.basis_of_selection_of_supplier,
+        incoterms: formData.value.supplierIncoterms,
+        previous_purchase: formData.value.no_of_previous_purchases,
+        delivery_time: formData.value.deliveryTime,
+        procurement_type: formData.value.procurementType,
+        payment_terms: formData.value.paymentTerms,
+        item_cost_currency: formData.value.costOfItems.selectedCurrency,
+        item_cost: formData.value.costOfItems.amount,
+        logistics_cost_currency: formData.value.logisticsCost.selectedCurrency,
+        logistics_cost: formData.value.logisticsCost.amount,
+        other_cost_currency: formData.value.others.selectedCurrency,
+        other_cost: formData.value.others.amount,
+        funding_request_currency: formData.value.fundingRequest.selectedCurrency,
+        funding_request: formData.value.fundingRequest.amount,
+        pro_forma_invoice: formData.value.proFormaInvoice,
+      }
       summaryStore.updateTransactionDetails({
-        soc_name: formData.value.proFormaInvoice,
-        supplier_oem_subcontractors: {
-          soc_name: formData.value.nameOfSupplier,
-          country: formData.value.country,
-          continent: formData.value.continent,
-          basis_of_selection: formData.value.basis_of_selection_of_supplier,
-          incoterms: formData.value.supplierIncoterms,
-          previous_purchase: formData.value.no_of_previous_purchases,
-          delivery_time: formData.value.deliveryTime,
-          procurement_type: formData.value.procurementType,
-          payment_terms: formData.value.paymentTerms,
-          item_cost_currency: formData.value.costOfItems.selectedCurrency,
-          item_cost: formData.value.costOfItems.amount,
-          logistics_cost_currency: formData.value.logisticsCost.selectedCurrency,
-          logistics_cost: formData.value.logisticsCost.amount,
-          other_cost_currency: formData.value.others.selectedCurrency,
-          other_cost: formData.value.others.amount,
-          funding_request_currency: formData.value.fundingRequest.selectedCurrency,
-          funding_request: formData.value.fundingRequest.amount,
-        },
+        supplier_oem_subcontractors: [supplierData],
       })
+      summaryStore.submitTransactionData()
     }
     return !valid
   })
@@ -417,10 +436,12 @@ const handleSubmit = async () => {
       >
       <el-form-item>
         <el-button
-          class="!bg-[#CC5500] !rounded-[4px] !border w-[68px] !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base"
+          class="!bg-[#CC5500] !rounded-[4px] !border w-[68px] !h-[50px] !py-3 !px-4 !text-white poppins-medium !text-base disabled:opacity-50 disabled:cursor-not-allowed"
           @click="handleSubmit"
+          :disabled="isLoading || !isFormValid"
         >
-          Next
+          <el-loading v-if="isLoading" type="circular" />
+          <span v-else>Submit</span>
         </el-button>
       </el-form-item>
     </div>

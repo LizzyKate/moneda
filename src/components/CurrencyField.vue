@@ -8,10 +8,13 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(['update:modelValue'])
 const currencies = [
-  { code: 'USD', value: 'USD' },
-  { code: 'EUR', value: 'EUR' },
-  { code: 'GBP', value: 'GBP' },
-  { code: 'NGN', value: 'NGN' },
+  { code: 'USD', value: 'usd' },
+  { code: 'EUR', value: 'eur' },
+  { code: 'GBP', value: 'gbp' },
+  { code: 'NGN', value: 'ngn' },
+  { code: 'CNY', value: 'cny' },
+  { code: 'JPY', value: 'jpy' },
+  { code: 'Swiss Franc', value: 'swiss_franc' },
 ]
 
 const selectedCurrency = ref(currencies[0].value)

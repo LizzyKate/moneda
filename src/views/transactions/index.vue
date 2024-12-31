@@ -52,15 +52,6 @@ const updateCurrentForm = (value: number) => {
       </div>
     </div>
   </div>
-
-  <!-- <FileUpload
-    v-model="file"
-    :max-size="2"
-    :allowed-types="['.pdf', '.docx', '.pptx', '.xlsx']"
-    required
-    @error="handleError"
-  />
-  <div v-if="file" class="mt-4">Selected file: {{ file.name }}</div>  -->
 </template>
 
 <style scoped>

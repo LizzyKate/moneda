@@ -63,6 +63,7 @@ export interface SupplierOemSubcontractors {
   other_cost: number
   funding_request_currency: string
   funding_request: number
+  pro_forma_invoice: File | null
 }
 export interface TransactionDetails {
   transaction_type: string
@@ -72,11 +73,10 @@ export interface TransactionDetails {
   estimated_value_currency: string
   awarding_payment_terms: string
   incoterms: string
-  duration: string
-  payment_after_invoice: string
-  purchase_order: null
-  previous_invoice: null
-  bank_statement: null
-  soc_name: null
-  supplier_oem_subcontractors: SupplierOemSubcontractors
+  duration: number
+  payment_after_invoice: number
+  purchase_order: File | null
+  previous_invoice: File | null
+  bank_statement: File | null
+  supplier_oem_subcontractors: SupplierOemSubcontractors[]
 }
