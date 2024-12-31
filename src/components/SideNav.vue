@@ -27,19 +27,21 @@ const navigateAndClose = (path: string) => {
 </script>
 
 <template>
-  <el-row class="h-full w-3/4 mx-auto">
+  <el-row class="h-full md:w-3/4 w-4/5 mx-auto">
     <el-col class="!flex-grow">
-      <div class="block md:hidden text-end w-full h-10">
-        <el-button
-          class="!pl-5 !text-[#ffffff66] !justify-start !bg-transparent !border-0 mt-auto poppins-medium text-sm"
-          @click="toggleSideNav"
-        >
-          <el-icon><Close color="white" size="20" /></el-icon>
-          <span class="!ml-5 tracking-wide">Close</span>
-        </el-button>
-      </div>
-      <div class="mt-5 mx-auto w-[47.38px] h-[38.06px] mb-12">
-        <img src="@/assets/images/logo.svg" class="w-full h-full" alt="logo" />
+      <div class="flex items-center justify-between mt-4 mb-12">
+        <div class="mx-auto w-[47.38px] h-[38.06px] md:mb-12">
+          <img src="@/assets/images/logo.svg" class="w-full h-full" alt="logo" />
+        </div>
+        <div class="block md:hidden text-end w-full h-10">
+          <el-button
+            class="!text-[#ffffff66] !p-0 !justify-start !bg-transparent !border-0 mt-auto poppins-medium text-sm"
+            @click="toggleSideNav"
+          >
+            <el-icon><Close color="white" size="20" /></el-icon>
+            <span class="!ml-5 tracking-wide">Close</span>
+          </el-button>
+        </div>
       </div>
       <el-menu
         :default-active="activeMenu"
