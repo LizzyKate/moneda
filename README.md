@@ -1,6 +1,6 @@
 # moneda
 
-This template should help get you started developing with Vue 3 in Vite.
+This app is built with vue3, element plus and tailwind css
 
 ## Recommended IDE Setup
 
@@ -19,6 +19,10 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 ```sh
 npm install
 ```
+
+## env
+Add this to your .env file
+VITE_API_URL=https://musa-mock-production.up.railway.app/
 
 ### Compile and Hot-Reload for Development
 
