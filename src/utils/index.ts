@@ -1,15 +1,23 @@
-import { type TransactionDetails } from '@/types/data'
+import type { TransactionDetails, DashboardData } from '@/types/data'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-async function fetchDashboardData() {
-  const response = await fetch(`${API_URL}summary`)
-  return await response.json()
+async function fetchData<T>(url: string): Promise<T> {
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    const errorMessage = await response.text()
+    throw new Error(errorMessage || `Error: ${response.status} ${response.statusText}`)
+  }
+
+  return response.json()
+}
+async function fetchDashboardData(): Promise<{ data: DashboardData }> {
+  return fetchData<{ data: DashboardData }>(`${API_URL}summary`)
 }
 
-async function fetchAwardingCompanies() {
-  const response = await fetch(`${API_URL}awarding-company`)
-  return await response.json()
+async function fetchAwardingCompanies(): Promise<{ data: { id: string; name: string }[] }> {
+  return fetchData<{ data: { id: string; name: string }[] }>(`${API_URL}awarding-company`)
 }
 
 async function submitTransactionData(data: TransactionDetails) {

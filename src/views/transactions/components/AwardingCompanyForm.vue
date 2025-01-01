@@ -257,7 +257,7 @@ onMounted(() => {
             label="No. of Previous Contracts"
           />
         </el-form-item>
-        <el-form-item class="mt-7" props="paymentTerms">
+        <el-form-item class="mt-6" props="paymentTerms">
           <DropdownSelect
             v-model="formData.paymentTerms"
             :options="paymentTermsOptions"

@@ -68,6 +68,7 @@ export const useSummaryStore = defineStore('summary', {
       this.isMobileNavOpen = !this.isMobileNavOpen
     },
     async fetchSummary() {
+      this.isLoading = true
       try {
         const { data } = await fetchDashboardData()
         if (data) {
@@ -76,7 +77,7 @@ export const useSummaryStore = defineStore('summary', {
       } catch (error) {
         ElNotification.error({
           title: 'Error',
-          message: (error as Error).message,
+          message: error instanceof Error ? error.message : 'Unknown error occurred',
         })
       } finally {
         this.isLoading = false
@@ -84,14 +85,16 @@ export const useSummaryStore = defineStore('summary', {
     },
 
     async fetchAwardingCompanies() {
+      this.isLoading = true
       try {
         const { data } = await fetchAwardingCompanies()
-        this.awardingCompanies = data
-        console.log(this.awardingCompanies, 'data')
+        if (data) {
+          this.awardingCompanies = data
+        }
       } catch (error) {
         ElNotification.error({
           title: 'Error',
-          message: (error as Error).message,
+          message: error instanceof Error ? error.message : 'Unknown error occurred',
         })
       } finally {
         this.isLoading = false
@@ -131,7 +134,7 @@ export const useSummaryStore = defineStore('summary', {
           message: (error as Error).message,
         })
       } finally {
-        this.isSubmitting = true
+        this.isSubmitting = false
       }
     },
   },

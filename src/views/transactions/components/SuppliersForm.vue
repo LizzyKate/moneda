@@ -361,7 +361,7 @@ const handleSubmit = async () => {
             label="No. of Previous Purchases"
           />
         </el-form-item>
-        <el-form-item class="mt-7" props="basis_of_selection_of_supplier">
+        <el-form-item class="mt-4" props="basis_of_selection_of_supplier">
           <DropdownSelect
             v-model="formData.basis_of_selection_of_supplier"
             :options="basis_of_selection_of_supplierOptions"
