@@ -15,7 +15,7 @@ const updateCurrentForm = (value: number) => {
   <el-button
     :icon="ArrowLeft"
     class="!text-[#CC5500] !border-0 !text-sm poppins-medium"
-    @click="$router.go(-1)"
+    @click="$router.replace('/')"
     type="button"
   >
     Back
