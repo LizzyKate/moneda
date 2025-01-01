@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Upload } from '@element-plus/icons-vue'
+import { Upload, Close } from '@element-plus/icons-vue'
 
 interface FileProps {
   maxSize?: number
@@ -73,10 +73,30 @@ const handleFileChange = (event: Event) => {
         <span class="text-base poppins-medium text-[#1F2937]">Upload file</span>
       </div>
     </div>
-    <div v-if="selectedFile" class="text-sm text-[#665E59]">
-      {{ selectedFile.name }}
+    <div v-if="selectedFile" class="flex items-center mt-3 space-x-2">
+      <p class="text-base poppins-regular text-[#CC5500]">
+        {{ selectedFile.name }}
+      </p>
+      <button
+        type="button"
+        class="text-sm text-red-500"
+        @click="
+          () => {
+            selectedFile = null
+            emit('update:modelValue', null)
+            if (fileInput?.value) {
+              fileInput.value = ''
+            }
+          }
+        "
+      >
+        <el-icon>
+          <Close size="24" />
+        </el-icon>
+      </button>
     </div>
-    <div v-else>
+
+    <div>
       <p class="text-xs poppins-regular text-[#665E59] mt-1">
         Max file size <strong>{{ maxSize }}MB</strong> ({{ allowedTypes.join(', ') }})
       </p>
