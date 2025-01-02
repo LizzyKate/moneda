@@ -55,7 +55,7 @@ watch(
     </h2>
   </div>
   <el-card
-    class="!border-[#efefef] h-[350px] 2xl:h-[650px] !rounded-lg w-full mx-auto mt-4 !bg-transparent !p-3 !shadow-none"
+    class="!border-[#efefef] h-[350px] 2xl:h-[650px] !rounded-lg 2xl:w-3/4 lg:w-full mx-auto mt-4 !bg-transparent !p-3 !shadow-none"
   >
     <el-skeleton v-if="props.isLoading" :rows="1" animated>
       <template #template>

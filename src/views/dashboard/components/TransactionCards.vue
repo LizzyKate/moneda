@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  <el-row :gutter="16" class="gap-y-4">
+  <el-row :gutter="16" class="w-full 2xl:w-3/4 !ml-auto gap-y-4">
     <el-col :xl="8" :lg="8" :md="12" v-for="(item, index) in props.transformedData" :key="index">
       <el-skeleton v-if="props.isLoading" :rows="1" animated>
         <template #template>
