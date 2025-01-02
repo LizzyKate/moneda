@@ -50,7 +50,7 @@ watch(
 
 <template>
   <div>
-    <h2 class="text-lg text-[#080808] poppins-medium text-left md:text-center">
+    <h2 class="text-lg text-[#080808] poppins-medium text-left 2xl:text-center">
       Transaction by awarding companies
     </h2>
   </div>
