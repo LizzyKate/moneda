@@ -26,7 +26,7 @@ const updateCurrentForm = (value: number) => {
       <div
         v-for="(title, index) in sections"
         :key="index"
-        :class="{ 'border-b border-[#CC5500] w-2/5': index === currentForm }"
+        :class="{ 'border-b border-[#CC5500]': index === currentForm, 'w-1/2': true }"
       >
         <div class="flex items-center space-x-4 mb-8 md:px-12 px-4">
           <div
