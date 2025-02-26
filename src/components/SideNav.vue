@@ -13,10 +13,17 @@ const toggleSideNav = () => {
 const router = useRouter()
 const route = useRoute()
 
+// const activeMenu = computed(() => {
+//   const path = route.path
+//   if (path === '/') return '1'
+//   if (path === '/transactions') return '2'
+//   return ''
+// })
+
 const activeMenu = computed(() => {
   const path = route.path
   if (path === '/') return '1'
-  if (path === '/transactions') return '2'
+  if (path === '/transactions') return '4' // Changed from '2' to '4'
   return ''
 })
 

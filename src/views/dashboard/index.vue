@@ -71,7 +71,10 @@ const transformedData = computed(() => {
 
 // Fetch summary data on component mount
 onMounted(() => {
-  summaryStore.fetchSummary()
+  // summaryStore.fetchSummary()
+  setTimeout(() => {
+    summaryStore.fetchSummary()
+  }, 5000)
 })
 </script>
 

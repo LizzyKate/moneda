@@ -12,10 +12,19 @@ const updateCurrentForm = (value: number) => {
 }
 </script>
 <template>
-  <el-button
+  <!-- <el-button
     :icon="ArrowLeft"
     class="!text-[#CC5500] !border-0 !text-sm poppins-medium"
     @click="$router.replace('/')"
+    type="button"
+  >
+    Back
+  </el-button> -->
+
+  <el-button
+    :icon="ArrowLeft"
+    class="!text-[#CC5500] !border-0 !text-sm poppins-medium"
+    @click="() => console.log('Back clicked')"
     type="button"
   >
     Back
@@ -23,10 +32,15 @@ const updateCurrentForm = (value: number) => {
   <h1 class="text-[32px] text-black poppins-bold mt-8">New Procurement Transaction</h1>
   <div class="mx-auto mt-16 md:w-3/4 w-full rounded-[14px] __container">
     <div class="w-full rounded-t-[14px] bg-[#EFEFEF] flex justify-between items-center pt-8">
-      <div
+      <!-- <div
         v-for="(title, index) in sections"
         :key="index"
         :class="{ 'border-b border-[#CC5500]': index === currentForm, 'w-1/2': true }"
+      > -->
+      <div
+        v-for="(title, index) in sections"
+        :key="index"
+        :class="{ 'border-b border-[#CC5500]': index !== currentForm, 'w-1/2': true }"
       >
         <div class="flex items-center space-x-4 mb-8 md:px-12 px-4">
           <div
@@ -45,7 +59,7 @@ const updateCurrentForm = (value: number) => {
       </div>
     </div>
     <div class="md:p-12 p-4">
-      <div v-if="currentForm === 0">
+      <div v-if="currentForm === 0 || currentForm === 1">
         <AwardingCompanyForm @update:currentForm="updateCurrentForm($event)" />
       </div>
       <div v-if="currentForm === 1">
